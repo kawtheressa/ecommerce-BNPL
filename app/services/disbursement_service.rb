@@ -9,6 +9,11 @@ class DisbursementService
     orders_to_disburse = @merchant.orders.where(disbursement_id: nil).where(created_at: date.beginning_of_day..date.end_of_day)
     return if orders_to_disburse.empty?
 
+    # Trigger monthly fee calculation on the first disbursement of the month
+    if first_disbursement_of_month?(date)
+      MonthlyFeeCalculator.new(date: date, merchant: @merchant).process_monthly_fees
+    end
+
     disbursement_amount = orders_to_disburse.sum(&:amount)
     commission_fees = orders_to_disburse.map { |order| Disbursements::Calculator.new(order.amount).calculate_fee }.sum.round(2)
 

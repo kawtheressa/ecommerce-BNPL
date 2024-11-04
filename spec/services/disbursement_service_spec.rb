@@ -2,11 +2,12 @@
 require 'rails_helper'
 
 RSpec.describe DisbursementService do
-  let(:merchant) { create(:merchant) }
+  let(:merchant) { create(:merchant, minimum_monthly_fee: 50.0) }
   let(:date) { Date.new(2023, 5, 15) }
+  let(:first_day) { Date.new(2023, 5, 1) }
   let(:service) { described_class.new(merchant) }
 
-  describe "Edge Cases for #process_disbursement" do
+  describe "#process_disbursement" do
     context "when there are no orders for the specified date" do
       it "does not create a disbursement" do
         expect { service.process_disbursement(date) }.not_to change { Disbursement.count }
@@ -40,8 +41,16 @@ RSpec.describe DisbursementService do
     end
 
     context "when disbursement is processed on the first day of the month" do
-      let(:first_day) { Date.new(2023, 5, 1) }
       let!(:order) { create(:order, merchant: merchant, amount: 100.0, created_at: first_day.beginning_of_day) }
+
+      it "triggers the MonthlyFeeCalculator for the first disbursement of the month" do
+        # Mock the MonthlyFeeCalculator to check if it gets called
+        calculator_double = instance_double(MonthlyFeeCalculator)
+        allow(MonthlyFeeCalculator).to receive(:new).with(date: first_day, merchant: merchant).and_return(calculator_double)
+        expect(calculator_double).to receive(:process_monthly_fees)
+
+        service.process_disbursement(first_day)
+      end
 
       it "recognizes it as the first disbursement of the month" do
         expect(service.send(:first_disbursement_of_month?, first_day)).to be true
