@@ -63,13 +63,13 @@ RSpec.describe Merchant, type: :model do
       before { merchant.disbursement_frequency = "weekly" }
 
       it "returns true if the given date matches the live_on weekday" do
-        merchant.live_on = Date.new(2023, 1, 2) # Assume it's a Monday
+        merchant.live_on = Date.new(2023, 1, 2) # It's a Monday
         date = Date.new(2023, 1, 9) # Another Monday
         expect(merchant.eligible_for_disbursement?(date)).to be true
       end
 
       it "returns false if the given date does not match the live_on weekday" do
-        merchant.live_on = Date.new(2023, 1, 2) # Assume it's a Monday
+        merchant.live_on = Date.new(2023, 1, 2) # It's a Monday
         date = Date.new(2023, 1, 10) # Not a Monday
         expect(merchant.eligible_for_disbursement?(date)).to be false
       end

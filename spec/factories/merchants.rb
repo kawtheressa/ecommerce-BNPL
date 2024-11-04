@@ -1,7 +1,7 @@
 # spec/factories/merchants.rb
 FactoryBot.define do
   factory :merchant do
-    reference { "sample_reference" }
+    reference { "merchant_#{SecureRandom.hex(4)}" }
     email { "merchant@example.com" }
     live_on { Date.today - 1.year }
     disbursement_frequency { "daily" }

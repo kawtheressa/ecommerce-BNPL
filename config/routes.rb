@@ -7,4 +7,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  # config/routes.rb
+  require "sidekiq/web"
+  mount Sidekiq::Web => "/sidekiq" # Access the UI at http://localhost:3000/sidekiq
 end

@@ -1,0 +1,6 @@
+# config/schedule.yml
+disbursement_worker:
+  cron: "0 8 * * *"   # Runs every day at 8:00 AM UTC
+  class: "DisbursementWorker"
+  queue: default
+  description: "Processes daily disbursements for all eligible merchants"

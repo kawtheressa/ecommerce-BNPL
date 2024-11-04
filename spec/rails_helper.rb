@@ -8,6 +8,10 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 require 'rspec/rails'
 require 'factory_bot_rails'  # Add this line to require FactoryBot
 
+require 'sidekiq/testing'
+# Enables Sidekiq to use a fake queue, which allows us to verify that jobs are enqueued without running them.
+Sidekiq::Testing.fake!
+
 # Configure RSpec
 RSpec.configure do |config|
   # Include FactoryBot syntax to simplify calls to factories
