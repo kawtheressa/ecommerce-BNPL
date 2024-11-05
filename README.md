@@ -18,7 +18,7 @@ The app is designed to calculate disbursements based on various criteria, includ
 ---
 
 ### Ruby Version
-- **Ruby**: 3.2.2
+- **Ruby**: 3.3.5
 - **Rails**: 7.2
 
 
