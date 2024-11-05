@@ -1,9 +1,9 @@
 # app/services/annual_report_service.rb
 class AnnualReportService
-  def generate_report
-    years = [ 2022, 2023 ]
+  YEARS = [ 2022, 2023 ]
 
-    report_data = years.map do |year|
+  def generate_report
+    report_data = YEARS.map do |year|
       {
         year: year,
         number_of_disbursements: number_of_disbursements(year),

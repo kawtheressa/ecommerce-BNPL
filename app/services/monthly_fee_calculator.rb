@@ -6,15 +6,17 @@ class MonthlyFeeCalculator
   end
 
   def process_monthly_fees
-    merchants = @merchant ? [ @merchant ] : Merchant.find_each
-    merchants.each do |merchant|
-      calculate_monthly_fee_for_merchant(merchant)
-    end
+    merchants = fetch_merchants
+    merchants.each { |merchant| handle_merchant_fees(merchant) }
   end
 
   private
 
-  def calculate_monthly_fee_for_merchant(merchant)
+  def fetch_merchants
+    @merchant ? [ @merchant ] : Merchant.find_each
+  end
+
+  def handle_merchant_fees(merchant)
     previous_month = @date.prev_month
     first_disbursement_date = previous_month.beginning_of_month
 
