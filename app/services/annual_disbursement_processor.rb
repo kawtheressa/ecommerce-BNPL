@@ -7,24 +7,24 @@ class AnnualDisbursementProcessor
   end
 
   def process_all
-    Merchant.find_each do |merchant|
-      # Optimize by fetching only the dates with orders within the year
-      dates_with_orders = orders_dates_within_year(merchant)
-
-      dates_with_orders.each do |date|
-        DisbursementService.new(merchant).process_disbursement(date)
-      end
+    grouped_orders.each do |merchant_id, date|
+      merchant = Merchant.find(merchant_id)
+      DisbursementService.new(merchant).process_disbursement(date)
     end
   end
 
   private
 
-  # Fetch only dates where orders exist for a given merchant within the year
-  def orders_dates_within_year(merchant)
-    merchant.orders
-            .where(created_at: @start_date..@end_date, disbursement_id: nil)
-            .pluck(:created_at)
-            .map(&:to_date)
-            .uniq
+  # Fetch merchant IDs and unique order dates within the year
+  # How Data Will Look Like:
+  # [[1, Mon, 02 Jan 2023],
+  # [1, Tue, 03 Jan 2023],
+  # [2, Mon, 02 Jan 2023],
+  # [3, Wed, 04 Jan 2023]]
+
+  def grouped_orders
+    Order.where(created_at: @start_date..@end_date, disbursement_id: nil)
+         .group("merchant_id, DATE(created_at)")
+         .pluck("merchant_id, DATE(created_at)")
   end
 end

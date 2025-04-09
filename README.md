@@ -147,7 +147,8 @@ rake db:setup_and_report
 
 ## Annual Report Summary
 
-| Year | Number of Disbursements | Amount Disbursed to Merchants | Amount of Order Fees | Number of monthly fees charged (From minimum monthly fee)	 | Amount of monthly fee charged (From minimum monthly fee)|
-|------|--------------------------|-------------------------------|----------------------|-------------------------------|-------------------------------|
-| 2022 | 94                       | 96,761.30 €                   | 967.78 €            | 1                             | 20.82 €                       |
-| 2023 | 433                      | 15,059,089.42 €               | 133,854.78 €        | 0                             | 0.00 €                        |
+| Year | Number of Disbursements | Amount Disbursed to Merchants | Amount of Order Fees | Number of Monthly Fees Charged | Amount of Monthly Fee Charged |
+|------|-------------------------|-------------------------------|-----------------------|---------------------------------|-------------------------------|
+| 2022 | 94                      | 48,380.65 €                   | 483.89 €              | 1                               | 25.41 €                       |
+| 2023 | 433                     | 7,529,544.71 €                | 66,927.39 €           | 0                               | 0.00 €                        |
+
