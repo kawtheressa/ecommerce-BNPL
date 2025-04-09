@@ -1,4 +1,4 @@
-# Merchant Disbursements
+# Merchant Disbursements - BNPL
 
 The app is designed to calculate disbursements based on various criteria, including commission schema per order amount and monthly fees for merchants. The project follows a **Domain-Driven Design (DDD)** structure to clearly separate domain logic from application and infrastructure concerns, providing flexibility, scalability, and maintainability.
 
