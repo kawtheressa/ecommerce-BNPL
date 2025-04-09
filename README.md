@@ -1,6 +1,25 @@
 # Merchant Disbursements - BNPL
 
-The app is designed to calculate disbursements based on various criteria, including commission schema per order amount and monthly fees for merchants. The project follows a **Domain-Driven Design (DDD)** structure to clearly separate domain logic from application and infrastructure concerns, providing flexibility, scalability, and maintainability.
+This application automates the calculation and reporting of merchant disbursements based on order volume and merchant activity. It handles:
+
+##### 1. Disbursement Calculation
+For each merchant order, the system calculates disbursements using a commission schema based on the order amount. These are scheduled and processed automatically using background jobs.
+
+##### 2. Monthly Fee Application
+Merchants have fixed monthly fee, applied only if their total commission doesn't reach a specified minimum. The app evaluates merchant activity and applies or skips this fee accordingly.
+
+##### 3. Annual Report Generation
+The system can generate a comprehensive annual report, summarizing:
+
+- Total number of disbursements
+
+- Total amount disbursed to merchants
+
+- Total order fees collected
+
+- Monthly fees applied (if any)
+
+###### **Reports can be generated programmatically or via rake tasks and printed to the console.** 
 
 ## Table of Contents
 
@@ -80,20 +99,22 @@ bundle exec rspec
 - **Disbursement Worker**: Executes scheduled disbursement calculation by 8 UTC in the background (using Sidekiq).
 
 
-### Technical Choices
-The following are the primary design choices:
+### ⚙️ Technical Choices
+The project follows a Domain-Driven Design (DDD) structure for clear separation between domain logic, application services, and infrastructure.
 
-#### Domain-Driven Design (DDD):
+#### Key Design Choices:
 
-The **DDD** approach was chosen to separate core business logic (domain layer) from application-specific logic. This structure simplifies testing and makes the application more modular and maintainable.
-The domains folder contains all entities and rules related to the business logic. For example, **calculator.rb** contains the core calculation logic for disbursements.
+###### Domain Layer:
+Located in the domains/ folder. Contains all core business logic like commission rules and fee calculation logic.
 
-#### Repository Pattern:
-Repositories (repositories folder) encapsulate the logic required to access data sources, separating domain logic from data access code, and making it easier to switch to different data sources in the future.
+###### Repository Pattern:
+Used to abstract data access logic and keep domain objects decoupled from ActiveRecord or external systems. Repositories are located in the repositories/ folder.
 
-#### Service Layer:
-Services in the services folder manage application **logic**, such as disbursement processing and report generation, maintaining a clear distinction from domain logic.
-By isolating business logic in services, we ensure that each service can evolve independently and remain highly testable  and reusable.
+###### Service Layer:
+Handles application-specific workflows such as disbursement processing and annual report generation. These services live in the services/ folder.
+
+###### Background Processing:
+Scheduled jobs (via Sidekiq) trigger disbursement calculations daily at 8 UTC using DisbursementWorker.
 
 
 
